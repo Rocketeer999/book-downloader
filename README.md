@@ -6,7 +6,7 @@ Install the python irc package:
 
 "pip3 install irc"
 
-Author: /u/anonymous_rocketeer
+Download the script
 
 THIS PROGRAM COMES WITH ABSOLUTELY NO WARRANTY
 
@@ -16,7 +16,6 @@ A Simple Ebook downloading bot.
 Much credit to Joel Rosdahl for his irc package:
 https://github.com/jaraco/irc.
 This bot searches irc.irchighway.net only, and is meant only to streamline the somewhat clunky download process. 
-This code is of debatable quality but it works.
 Use at your own risk
 
 Calling this program:
@@ -27,5 +26,4 @@ OR:
 
 python3 downloader.py <nickname> <searchterm>
 
-KNOWN BUGS: If there are no search results, it hangs forever. Sorry.
-
+KNOWN BUGS: The IRC channel admins have made several changes that break this script, including blocking all requests within a certain time after joining the channel.
