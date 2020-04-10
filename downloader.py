@@ -43,9 +43,13 @@ import argparse
 import shlex
 from time import sleep
 import jaraco.logging
+from jaraco.stream import buffer
 import six
 from six.moves import socketserver
 import irc.client
+
+#Prevents a common UnicodeDecodeError when downloading from many sources that don't use utf-8
+irc.client.ServerConnection.buffer_class = buffer.LenientDecodingLineBuffer
 
 
 def userselect(filename):
@@ -124,14 +128,15 @@ class TestBot(irc.bot.SingleServerIRCBot):
         self.file = open(self.filename, "wb")
         peer_address = irc.client.ip_numstr_to_quad(peer_address)
         peer_port = int(peer_port)
-        self.dcc = self.dcc_connect(peer_address, peer_port, "raw")
+        self.my_dcc = self.dcc("raw")
+        self.my_dcc.connect(peer_address, peer_port)
         
     def on_dccmsg(self, connection, event):
         data = event.arguments[0]
         self.file.write(data)
         self.received_bytes = self.received_bytes + len(data) 
         ##TODO: Write progress bar here?
-        self.dcc.send_bytes(struct.pack("!I", self.received_bytes))
+        self.my_dcc.send_bytes(struct.pack("!I", self.received_bytes))
 
     def on_dcc_disconnect(self, connection, event):
         self.file.close()
